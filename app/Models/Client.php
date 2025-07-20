@@ -18,7 +18,7 @@ class Client extends Model
         'country',
         'city',
         'tax_number',
-        'organization_id',
+        // 'organization_id',
     ];
 
     protected $casts = [
