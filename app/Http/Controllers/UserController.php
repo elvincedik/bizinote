@@ -25,35 +25,38 @@ class UserController extends BaseController
 
     //------------- GET ALL USERS---------\\
 
-    public function index(request $request)
+    public function index(Request $request)
     {
-
         $this->authorizeForUser($request->user('api'), 'view', User::class);
-        // How many items do you want to display.
+
         $perPage = $request->limit;
         $pageStart = \Request::get('page', 1);
-        // Start displaying items from this number;
         $offSet = ($pageStart * $perPage) - $perPage;
         $order = $request->SortField;
         $dir = $request->SortType;
+
         $helpers = new helpers();
-        // Filter fields With Params to retrieve
+
         $columns = array(0 => 'username', 1 => 'statut', 2 => 'phone', 3 => 'email');
         $param = array(0 => 'like', 1 => '=', 2 => 'like', 3 => 'like');
-        $data = array();
 
         $Role = Auth::user()->roles()->first();
         $ShowRecord = Role::findOrFail($Role->id)->inRole('record_view');
 
-        $users = User::where(function ($query) use ($ShowRecord) {
-            if (!$ShowRecord) {
-                return $query->where('id', '=', Auth::user()->id);
-            }
-        });
+        $authUser = Auth::user();
 
-        //Multiple Filter
+        $users = User::query();
+
+        // Filter by organization_id
+        $users->where('organization_id', $authUser->organization_id);
+
+        // If the user is not allowed to view all records, restrict to their own account
+        if (!$ShowRecord) {
+            $users->where('id', $authUser->id);
+        }
+
+        // Multiple filters
         $Filtred = $helpers->filter($users, $columns, $param, $request)
-        // Search With Multiple Param
             ->where(function ($query) use ($request) {
                 return $query->when($request->filled('search'), function ($query) use ($request) {
                     return $query->where('username', 'LIKE', "%{$request->search}%")
@@ -63,10 +66,13 @@ class UserController extends BaseController
                         ->orWhere('phone', 'LIKE', "%{$request->search}%");
                 });
             });
+
         $totalRows = $Filtred->count();
-        if($perPage == "-1"){
+
+        if ($perPage == "-1") {
             $perPage = $totalRows;
         }
+
         $users = $Filtred->offset($offSet)
             ->limit($perPage)
             ->orderBy($order, $dir)
@@ -83,9 +89,10 @@ class UserController extends BaseController
         ]);
     }
 
+
     //------------- GET USER Auth ---------\\
 
-   public function GetUserAuth(Request $request)
+    public function GetUserAuth(Request $request)
     {
         $helpers = new Helpers();
         $user = Auth::user();
@@ -142,11 +149,9 @@ class UserController extends BaseController
         if ($roles) {
             foreach ($roles->permissions as $permission) {
                 $data[] = $permission->name;
-
             }
             return response()->json(['success' => true, 'data' => $data]);
         }
-
     }
 
     //------------- STORE NEW USER ---------\\
@@ -168,14 +173,13 @@ class UserController extends BaseController
                 $image_resize = Image::make($image->getRealPath());
                 $image_resize->resize(128, 128);
                 $image_resize->save(public_path('/images/avatar/' . $filename));
-
             } else {
                 $filename = 'no_avatar.png';
             }
 
-            if($request['is_all_warehouses'] == '1' || $request['is_all_warehouses'] == 'true'){
+            if ($request['is_all_warehouses'] == '1' || $request['is_all_warehouses'] == 'true') {
                 $is_all_warehouses = 1;
-            }else{
+            } else {
                 $is_all_warehouses = 0;
             }
 
@@ -196,10 +200,9 @@ class UserController extends BaseController
             $role_user->role_id = $request['role'];
             $role_user->save();
 
-            if(!$User->is_all_warehouses){
+            if (!$User->is_all_warehouses) {
                 $User->assignedWarehouses()->sync($request['assigned_to']);
             }
-    
         }, 10);
 
         return response()->json(['success' => true]);
@@ -207,9 +210,10 @@ class UserController extends BaseController
 
     //------------ function show -----------\\
 
-    public function show($id){
+    public function show($id)
+    {
         //
-        
+
     }
 
     public function edit(Request $request, $id)
@@ -227,9 +231,9 @@ class UserController extends BaseController
     //------------- UPDATE  USER ---------\\
 
     public function update(Request $request, $id)
-    {        
+    {
         $this->authorizeForUser($request->user('api'), 'update', User::class);
-        
+
         $this->validate($request, [
             'email' => 'required|email|unique:users',
             'email' => Rule::unique('users')->ignore($id),
@@ -237,7 +241,7 @@ class UserController extends BaseController
             'email.unique' => 'This Email already taken.',
         ]);
 
-        \DB::transaction(function () use ($id ,$request) {
+        \DB::transaction(function () use ($id, $request) {
             $user = User::findOrFail($id);
             $current = $user->password;
 
@@ -247,7 +251,6 @@ class UserController extends BaseController
                 } else {
                     $pass = $user->password;
                 }
-
             } else {
                 $pass = $user->password;
             }
@@ -273,9 +276,9 @@ class UserController extends BaseController
                 $filename = $currentAvatar;
             }
 
-            if($request['is_all_warehouses'] == '1' || $request['is_all_warehouses'] == 'true'){
+            if ($request['is_all_warehouses'] == '1' || $request['is_all_warehouses'] == 'true') {
                 $is_all_warehouses = 1;
-            }else{
+            } else {
                 $is_all_warehouses = 0;
             }
 
@@ -293,18 +296,16 @@ class UserController extends BaseController
 
             ]);
 
-            role_user::where('user_id' , $id)->update([
+            role_user::where('user_id', $id)->update([
                 'user_id' => $id,
                 'role_id' => $request['role'],
             ]);
 
             $user_saved = User::where('deleted_at', '=', null)->findOrFail($id);
             $user_saved->assignedWarehouses()->sync($request['assigned_to']);
-
         }, 10);
-        
-        return response()->json(['success' => true]);
 
+        return response()->json(['success' => true]);
     }
 
 
@@ -313,16 +314,18 @@ class UserController extends BaseController
     public function updateProfile(Request $request, $id)
     {
 
-        $this->validate($request, [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'username' => 'required',
-            'email' => 'required|email|unique:users',
-            'email' => Rule::unique('users')->ignore($id),
-            'phone' => 'required',
+        $this->validate(
+            $request,
+            [
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'username' => 'required',
+                'email' => 'required|email|unique:users',
+                'email' => Rule::unique('users')->ignore($id),
+                'phone' => 'required',
             ]
         );
-        
+
         $id = Auth::user()->id;
         $user = User::findOrFail($id);
         $current = $user->password;
@@ -333,7 +336,6 @@ class UserController extends BaseController
             } else {
                 $pass = $user->password;
             }
-
         } else {
             $pass = $user->password;
         }
@@ -372,7 +374,6 @@ class UserController extends BaseController
         ]);
 
         return response()->json(['avatar' => $filename, 'user' => $request['username']]);
-
     }
 
     //----------- IsActivated (Update Statut User) -------\\
@@ -405,12 +406,10 @@ class UserController extends BaseController
             foreach ($roles->permissions as $permission) {
                 $item[$permission->name]['slug'] = $permission->name;
                 $item[$permission->name]['id'] = $permission->id;
-
             }
             $data[] = $item;
         }
         return $data[0];
-
     }
 
     //------------- GET USER Auth ---------\\
@@ -420,5 +419,4 @@ class UserController extends BaseController
         $data = Auth::user();
         return response()->json(['success' => true, 'user' => $data]);
     }
-
 }

@@ -278,18 +278,12 @@ export default {
                         window.location.href = "/";
                     })
                     .catch((error) => {
-                        // this.makeToast("danger", "Registration failed", "Error");
                         console.error(
                             "Backend validation error:",
                             error
                         );
 
-                        // const errors = error.response?.data?.errors;
-                        // const firstError = errors
-                        //     ? Object.values(errors)[0][0]
-                        //     : "Something went wrong";
-
-                        // this.makeToast("danger", firstError, "Error");
+                        
                     })
                     .finally(() => {
                         this.loading = false;

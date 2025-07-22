@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert(
             array(
                 'id' => 1,
+                // 'organization_id' => 1,
                 'firstname' => 'William',
                 'lastname' => 'Castillo',
                 'username' => 'William Castillo',

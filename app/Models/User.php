@@ -84,4 +84,18 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Organization::class);
     }
+
+    protected static function booted()
+    {
+        static::addGlobalScope('organization', function ($builder) {
+            if (app()->runningInConsole() || !request()->hasHeader('Authorization')) {
+                // Skip scope when running in CLI or no auth token
+                return;
+            }
+
+            if (auth()->check()) {
+                $builder->where('organization_id', auth()->user()->organization_id);
+            }
+        });
+    }
 }
