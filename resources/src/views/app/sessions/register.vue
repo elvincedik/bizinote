@@ -193,9 +193,24 @@
                                 </b-form>
                             </validation-observer>
 
-                            <div class="mt-3 text-center">
+                            <!-- <div class="mt-3 text-center">
                                 Already have an account?
                                 <a href="/login" class="text-muted"
+                                    ><u>Login</u></a
+                                >
+                            </div> -->
+                            <!-- <div class="mt-3 text-center">
+                                Already have an account?
+                                <a href="/login?showLogin=1" class="text-muted"
+                                    ><u>Login</u></a
+                                >
+                            </div> -->
+                            <div class="mt-3 text-center">
+                                Already have an account?
+                                <a
+                                    href="#"
+                                    @click.prevent="goToLogin"
+                                    class="text-muted"
                                     ><u>Login</u></a
                                 >
                             </div>
@@ -246,6 +261,10 @@ export default {
             });
     },
     methods: {
+        goToLogin() {
+            localStorage.setItem("forceShowLogin", "true");
+            window.location.href = "/login";
+        },
         submitRegister() {
             this.$refs.register_form.validate().then((valid) => {
                 if (!valid) {
@@ -278,12 +297,7 @@ export default {
                         window.location.href = "/";
                     })
                     .catch((error) => {
-                        console.error(
-                            "Backend validation error:",
-                            error
-                        );
-
-                        
+                        console.error("Backend validation error:", error);
                     })
                     .finally(() => {
                         this.loading = false;
