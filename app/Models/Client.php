@@ -25,6 +25,11 @@ class Client extends Model
         'code' => 'integer',
     ];
 
+    public function sales()
+    {
+        return $this->hasMany(Sale::class, 'client_id');
+    }
+
     public function organization()
     {
         return $this->belongsTo(Organization::class);

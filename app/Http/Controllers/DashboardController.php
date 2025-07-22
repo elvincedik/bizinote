@@ -190,33 +190,33 @@ class DashboardController extends Controller
         $role = Auth::user()->roles()->first();
         $view_records = Role::findOrFail($role->id)->inRole('record_view');
 
-        $data = Sale::whereBetween('date', [
-            Carbon::now()->startOfMonth(),
-            Carbon::now()->endOfMonth(),
-        ])->where('sales.deleted_at', '=', null)
-            ->where(function ($query) use ($view_records) {
+        $orgId = Auth::user()->organization_id;
+
+        $clients = Client::where('organization_id', $orgId)
+            ->withCount(['sales as value' => function ($query) use ($warehouse_id, $array_warehouses_id, $view_records) {
+                $query->whereBetween('date', [
+                    Carbon::now()->startOfMonth(),
+                    Carbon::now()->endOfMonth(),
+                ])
+                    ->whereNull('deleted_at');
+
                 if (!$view_records) {
-                    return $query->where('sales.user_id', '=', Auth::user()->id);
+                    $query->where('user_id', Auth::user()->id);
                 }
-            })
 
-            ->where(function ($query) use ($warehouse_id, $array_warehouses_id) {
                 if ($warehouse_id !== 0) {
-                    return $query->where('sales.warehouse_id', $warehouse_id);
+                    $query->where('warehouse_id', $warehouse_id);
                 } else {
-                    return $query->whereIn('sales.warehouse_id', $array_warehouses_id);
+                    $query->whereIn('warehouse_id', $array_warehouses_id);
                 }
-            })
-
-            ->join('clients', 'sales.client_id', '=', 'clients.id')
-            ->select(DB::raw('clients.name'), DB::raw("count(*) as value"))
-            ->groupBy('clients.name')
+            }])
             ->orderBy('value', 'desc')
             ->take(5)
-            ->get();
+            ->get(['name']);
 
-        return response()->json($data);
+        return response()->json($clients);
     }
+
 
 
     //-------------------- Get Top 5 Products This YEAR -------------\\
