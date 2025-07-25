@@ -98,4 +98,13 @@ class User extends Authenticatable
             }
         });
     }
+
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope('organization', function ($builder) {
+    //         if (auth()->check()) {
+    //             $builder->where('organization_id', auth()->user()->organization_id);
+    //         }
+    //     });
+    // }
 }
