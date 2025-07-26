@@ -823,11 +823,13 @@ class SalesController extends BaseController
 
     public function Print_Invoice_POS(Request $request, $id)
     {
+        $user = auth('api')->user();
         $helpers = new helpers();
         $details = array();
 
         $sale = Sale::with('details.product.unitSale')
             ->where('deleted_at', '=', null)
+            ->where('organization_id', $user->organization_id)
             ->findOrFail($id);
 
         $item['id'] = $sale->id;
@@ -844,17 +846,27 @@ class SalesController extends BaseController
 
         foreach ($sale['details'] as $detail) {
             if ($detail->sale_unit_id !== null) {
-                $unit = Unit::where('id', $detail->sale_unit_id)->first();
+                $unit = Unit::where('id', $detail->sale_unit_id)
+                    ->where('organization_id', $user->organization_id)
+                    ->first();
             } else {
                 $product_unit_sale_id = Product::with('unitSale')
                     ->where('id', $detail->product_id)
+                    ->where('organization_id', $user->organization_id)
                     ->first();
-                $unit = $product_unit_sale_id['unitSale'] ? Unit::where('id', $product_unit_sale_id['unitSale']->id)->first() : NULL;
+                $unit = $product_unit_sale_id && $product_unit_sale_id->unitSale
+                    ? Unit::where('id', $product_unit_sale_id->unitSale->id)
+                    ->where('organization_id', $user->organization_id)
+                    ->first()
+                    : null;
             }
 
             if ($detail->product_variant_id) {
                 $productsVariants = ProductVariant::where('product_id', $detail->product_id)
-                    ->where('id', $detail->product_variant_id)->first();
+                    ->where('id', $detail->product_variant_id)
+                    ->where('organization_id', $user->organization_id)
+                    ->first();
+
                 $data['code'] = $productsVariants->code;
                 $data['name'] = '[' . $productsVariants->name . ']' . $detail['product']['name'];
             } else {
@@ -873,10 +885,13 @@ class SalesController extends BaseController
 
         $payments = PaymentSale::with('sale', 'payment_method')
             ->where('sale_id', $id)
+            ->where('organization_id', $user->organization_id)
             ->orderBy('id', 'DESC')
             ->get();
 
-        $settings = Setting::where('deleted_at', '=', null)->first();
+        $settings = Setting::where('deleted_at', '=', null)
+        ->where('organization_id', $user->organization_id)
+        ->first();
         $pos_settings = PosSetting::where('deleted_at', '=', null)->first();
         $symbol = $helpers->Get_Currency_Code();
 
@@ -889,6 +904,8 @@ class SalesController extends BaseController
             'details' => $details,
         ]);
     }
+
+
 
     //------------- GET PAYMENTS SALE -----------\\
 
@@ -929,11 +946,11 @@ class SalesController extends BaseController
             ->where('Ref', 'like', 'SL_%')
             ->latest('id')
             ->first();
-    
+
         if ($last) {
             $item = $last->Ref;
             $nwMsg = explode("_", $item);
-    
+
             // Ensure valid structure before processing
             if (isset($nwMsg[1]) && is_numeric($nwMsg[1])) {
                 $inMsg = $nwMsg[1] + 1;
@@ -944,7 +961,7 @@ class SalesController extends BaseController
         } else {
             $code = 'SL_1111';
         }
-    
+
         return $code;
     }
 
