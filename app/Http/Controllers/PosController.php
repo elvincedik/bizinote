@@ -76,6 +76,7 @@ class PosController extends BaseController
             $view_records = Role::findOrFail($role->id)->inRole('record_view');
             $order = new Sale;
 
+            $order->organization_id = auth()->user()->organization_id;
             $order->is_pos = 1;
             $order->date = Carbon::now();
             $order->time = now()->toTimeString();

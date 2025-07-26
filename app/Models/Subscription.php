@@ -79,6 +79,7 @@ class Subscription extends Model
                 'paid_amount' => 0,
                 'payment_statut' => 'unpaid',
                 'shipping_status' => 'pending',
+                'organization_id' => auth()->user()->organization_id,
             ]);
 
             // Fetch product unit for sale
