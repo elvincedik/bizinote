@@ -18,3 +18,9 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+
+# Ignore built JS and manifest files
+/public/js/login.min.js
+/public/js/main.min.js
+/public/mix-manifest.json
