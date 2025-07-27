@@ -1,3 +1,40 @@
+.card-ed.card {
+  box-shadow: none !important;
+}
+
+.nprimary {
+  background-color: #0944AA !important;
+}
+.nprimarytext {
+  color: #0944AA !important;
+}
+
+.btn13 {
+	padding: .5rem 1.3rem !important;
+}
+
+.align-items-default {
+  align-items:end;
+}
+
+.auth-layouts-wrap {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background-size: cover;
+	/* background: url(/images/photo-wide-4.jpg?ea98fbfd3510c4f272ebf0b557fc7eba); */
+}
+
+.font-weight-bold.fs56{
+  margin-bottom: -0.7rem !important;
+}
+
+.fs56{
+	font-size: 2.3rem;
+}
+
 .loading_wrap {
     width: 100%;
     height: 100%;
