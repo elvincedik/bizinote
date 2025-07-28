@@ -114,6 +114,8 @@ class PosController extends BaseController
                     'discount' => $value['discount'],
                     'discount_method' => $value['discount_Method'],
                     'imei_number' => $value['imei_number'],
+                    'organization_id' => auth()->user()->organization_id,
+                    
                 ];
 
                 if ($value['product_variant_id'] !== null) {

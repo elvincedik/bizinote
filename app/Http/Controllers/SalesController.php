@@ -521,7 +521,7 @@ class SalesController extends BaseController
                             'product_variant_id'   => $prod_detail['product_variant_id'],
                             'total'                => $prod_detail['subtotal'],
                             'imei_number'          => $prod_detail['imei_number'],
-                            'organization_id'      => $organization_id,
+                            'organization_id'      => auth()->user()->organization_id,
                         ];
 
                         if (!in_array($prod_detail['id'], $old_products_id)) {
