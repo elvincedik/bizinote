@@ -222,6 +222,7 @@ class PosController extends BaseController
                     'change' => $changeReturn,
                     'notes' => $request['payment_note'] ?? null,
                     'user_id' => Auth::user()->id,
+                    'organization_id' => auth()->user()->organization_id,
                 ]);
     
                 if ($payment['payment_method_id'] == 1 || $payment['payment_method_id'] == '1') {
@@ -850,6 +851,7 @@ class PosController extends BaseController
                                 'change' => $request['change'],
                                 'notes' => $request->payment['notes'],
                                 'user_id' => Auth::user()->id,
+                                'organization_id' => auth()->user()->organization_id,
                             ]);
 
                             $account = Account::where('id', $request->payment['account_id'])->exists();

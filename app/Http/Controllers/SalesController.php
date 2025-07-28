@@ -359,6 +359,7 @@ class SalesController extends BaseController
                                 'change' => $request['change'],
                                 'notes' => NULL,
                                 'user_id' => Auth::user()->id,
+                                'organization_id' => auth()->user()->organization_id,
                             ]);
 
                             if ($account = Account::where('organization_id', auth()->user()->organization_id)
