@@ -1064,12 +1064,21 @@ class ReportController extends BaseController
 
         $this->authorizeForUser($request->user('api'), 'WarehouseStock', Product::class);
 
+        // $data['sales'] = Sale::where('deleted_at', '=', null)
+        //     ->where(function ($query) use ($request) {
+        //         return $query->when($request->filled('warehouse_id'), function ($query) use ($request) {
+        //             return $query->where('warehouse_id', $request->warehouse_id);
+        //         });
+        //     })->count();
+
         $data['sales'] = Sale::where('deleted_at', '=', null)
+            ->where('organization_id', auth()->user()->organization_id)
             ->where(function ($query) use ($request) {
                 return $query->when($request->filled('warehouse_id'), function ($query) use ($request) {
                     return $query->where('warehouse_id', $request->warehouse_id);
                 });
             })->count();
+
 
         $data['purchases'] = Purchase::where('deleted_at', '=', null)
             ->where(function ($query) use ($request) {
