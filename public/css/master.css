@@ -81,3 +81,9 @@
       -webkit-transform: rotate(360deg);
     }
   }
+
+.vselect-style {
+  background: linear-gradient(#8855FF, #8855FF) !important;
+  color: black;
+  border: none;
+}
