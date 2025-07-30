@@ -49,7 +49,7 @@
                         href="#"
                         v-b-toggle.panel-dashboard
                         variant="transparent"
-                      >{{$t('dashboard')}}</b-button>
+                      >{{$t('dashboard')}}z</b-button>
                     </b-card-header>
                     <b-collapse
                       id="panel-dashboard "
