@@ -1,53 +1,97 @@
 <template>
-  <div class="auth-layout-wrap" v-if="logo">
+  <div v-if="logo">
+    <div class="container d-flex justify-content-between align-items-default">
+      <div><img :src="logo" :width="60" alt="logo" /></div>
+      <div>
+        <b-button size="sm" variant="link" @click="showLogin = false"
+          ><a href="/login">Back to Home</a></b-button
+        >
+      </div>
+    </div>
+   <div class="auth-layoutss-wrap mt-5">
     <div class="auth-content">
-      <div class="card o-hidden">
+      <div class="card-ed o-hidden">
         <div class="row">
           <div class="col-md-12">
             <div class="p-4">
-              <div class="auth-logo text-center mb-30">
-                 <img :src="logo" alt="logo">
+              <div class="auth-logo text-center mt-44">
+                 <!-- <img :src="logo" alt="logo"> -->
               </div>
-              <h1 class="mb-3 text-18">{{$t('Forgot_Password')}}</h1>
+              <div class="mb-4"><h1 class="text-33 font-weight-bold">{{$t('Forgot_Password')}}</h1>
+              <p>Enter your email address to set new password</p></div>
+              
               <validation-observer ref="Reset_password">
                 <b-form @submit.prevent="Submit_Reset">
-                  <validation-provider
-                    name="Email Address"
-                    :rules="{ required: true}"
-                    v-slot="validationContext"
-                  >
-                    <b-form-group :label="$t('Email_Address')" class="text-12">
-                      <b-form-input
-                        :state="getValidationState(validationContext)"
-                        aria-describedby="Email-feedback"
-                        class="form-control-rounded"
-                        type="text"
-                        v-model="email"
-                        email
-                      ></b-form-input>
-                      <b-form-invalid-feedback id="Email-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-                    </b-form-group>
-                  </validation-provider>
-                  <button
+                  
+               <validation-provider
+  name="Email Address"
+  :rules="{ required: true, email: true }"
+  v-slot="validationContext"
+>
+  <b-form-group :label="$t('Email_Address') + ' '">
+    <template #label>
+      <span>{{ $t('Email_Address') }}</span>
+      <span style="color: red;">*</span>
+    </template>
+    <b-form-input
+      :state="getValidationState(validationContext)"
+      aria-describedby="Email-feedback"
+      class="form-control"
+      type="text"
+      v-model="email"
+    ></b-form-input>
+    <b-form-invalid-feedback id="Email-feedback">
+      {{ validationContext.errors[0] }}
+    </b-form-invalid-feedback>
+  </b-form-group>
+</validation-provider>
+
+                  <!-- <button
                     type="submit"
                     :disabled="loading"
-                    class="btn btn-primary btn-block btn-rounded mt-3"
-                  >{{$t('Reset_Password')}}</button>
+                    class="btn btn-primary btn-block nprimary mt-3"
+                  >{{$t('Reset_Password')}}</button> -->
                   <div v-once class="typo__p" v-if="loading">
                     <div class="spinner sm spinner-primary mt-3"></div>
                   </div>
                 </b-form>
               </validation-observer>
-              <div class="mt-3 text-center">
+              <!-- <div class="mt-3 text-center">
                 <a href="/login"  class="text-muted">
                   <u>{{$t('SignIn')}}</u>
                 </a>
-              </div>
+              </div> -->
+
+                 <div
+                                            class="d-flex justify-content-between align-items-center"
+                                        >
+                                            <div>
+                                                <b-button
+                                                    type="submit"
+                                                    tag="button"
+                                                    class="btn nprimary btn33 mt-2"
+                                                    variant="primary mt-2"
+                                                    :disabled="loading"
+                                                    >Next</b-button
+                                                >
+                                            </div>
+
+                                            <div>
+      
+                                                <a
+                                                    href="/login"
+                                                    class="nprimarytext"
+                                                >
+                                                    <u>Back to login</u>
+                                                </a>
+                                            </div>
+                                        </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 </template>
 

@@ -41,7 +41,6 @@ class GenerateSubscriptionInvoices extends Command
                 'Reglement' => 'flutterwave',
                 'user_id'   => $invoice->user_id ?? 1,
                 'notes'     => 'Auto payment for subscription #' . $subscription->id,
-                'organization_id' => auth()->user()->organization_id,
             ]);
 
             // 2. Decrease product stock
