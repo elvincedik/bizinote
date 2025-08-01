@@ -1,11 +1,7 @@
 <template>
     <!-- ============ Body content start ============= -->
     <div class="main-content" style="width: 96%; margin-left: 4%">
-        <!-- <div id="banner">
-            <h1 class="text-white">Hello Organization Name -</h1>
-            <p>Here’s what is happening in your organization today</p>
-        </div> -->
-        <!-- <div> -->
+
         <div
             v-if="loading"
             class="loading_page spinner spinner-primary mr-3"
@@ -37,8 +33,10 @@
                                     label: w.name,
                                     value: w.id,
                                 }))
+                                
                             "
                             class="vselect-style"
+                            
                         />
                     </b-col>
 
