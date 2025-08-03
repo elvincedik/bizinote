@@ -632,7 +632,7 @@
                 <b-col md="12 mb-2">
                   <ValidationProvider rules vid="product" v-slot="x">
                     <div class="form-check">
-                      <label class="checkbox checkbox-outline-primary">
+                      <label class="checkbox checkbox-outline-nprimary">
                         <input type="checkbox" v-model="product.is_imei">
                         <h5>{{$t('Product_Has_Imei_Serial_number')}}</h5>
                         <span class="checkmark"></span>
@@ -645,7 +645,7 @@
                 <b-col md="12 mb-2">
                   <ValidationProvider rules vid="product" v-slot="x">
                     <div class="form-check">
-                      <label class="checkbox checkbox-outline-primary">
+                      <label class="checkbox checkbox-outline-nprimary">
                         <input type="checkbox" v-model="product.not_selling">
                         <h5>{{$t('This_Product_Not_For_Selling')}}</h5>
                         <span class="checkmark"></span>
@@ -657,8 +657,8 @@
             </b-card>
           </b-col>
 
-          <b-col md="12" class="mt-3">
-            <b-button variant="primary" type="submit" :disabled="SubmitProcessing"><i class="i-Yes me-2 font-weight-bold"></i> {{$t('submit')}}</b-button>
+          <b-col md="12" class="text-white mt-3">
+            <b-button variant="nprimary" type="submit" :disabled="SubmitProcessing"><i class="i-Yes me-2 font-weight-bold"></i> {{$t('submit')}}</b-button>
             <div v-once class="typo__p" v-if="SubmitProcessing">
               <div class="spinner sm spinner-primary mt-3"></div>
             </div>

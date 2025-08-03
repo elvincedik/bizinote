@@ -1,9 +1,42 @@
+.customizer .handle {
+	position: absolute;
+	display: flex;
+	top: 8px;
+	left: -36px;
+	background: #0944AA !important;
+	cursor: pointer;
+	padding: 10px 8px;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	box-shadow: -3px 0px 4px rgba(0, 0, 0, 0.06);
+	color: #fff;
+	font-size: 20px;
+	transition: 0.3s all ease-in-out;
+}
+
+.checkbox input:checked ~ .checkmark, .radio input:checked ~ .checkmark {
+	background-color: #0944AA !important;
+}
+
+.checkbox-outline-nprimary .checkmark {
+	background: #fff;
+	border: 1px solid #0944AA !important;
+}
+
+.checkbox-outline-nprimary .checkmark::after {
+  border-color: #ffff !important;
+}
+
 .card-ed.card {
   box-shadow: none !important;
 }
 
 .nprimary {
   background-color: #0944AA !important;
+}
+.btn-nprimary {
+  background-color: #0944AA !important;
+  color: white;
 }
 .nprimarytext {
   color: #0944AA !important;
