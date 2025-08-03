@@ -1,6 +1,6 @@
 <template>
     <!-- ============ Body content start ============= -->
-    <div class="main-content" style="width: 96%; margin-left: 4%">
+    <div class="main-content">
         <div
             v-if="loading"
             class="loading_page spinner spinner-primary mr-3"

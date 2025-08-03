@@ -92,34 +92,45 @@
 
                                         <!-- Password -->
                                         <validation-provider
-                                            name="Password"
-                                            :rules="{ required: true }"
-                                            v-slot="validationContext"
-                                        >
-                                            <b-form-group
-                                                :label="$t('password')"
-                                                class="text-12"
-                                            >
-                                                <b-form-input
-                                                    :state="
-                                                        getValidationState(
-                                                            validationContext
-                                                        )
-                                                    "
-                                                    aria-describedby="Password-feedback"
-                                                    class=""
-                                                    type="password"
-                                                    v-model="password"
-                                                ></b-form-input>
-                                                <b-form-invalid-feedback
-                                                    id="Password-feedback"
-                                                    >{{
-                                                        validationContext
-                                                            .errors[0]
-                                                    }}</b-form-invalid-feedback
-                                                >
-                                            </b-form-group>
-                                        </validation-provider>
+  name="Password"
+  :rules="{ required: true }"
+  v-slot="validationContext"
+>
+  <b-form-group :label="$t('password')" class="text-12">
+    <div style="position: relative;">
+      <b-form-input
+        :state="getValidationState(validationContext)"
+        aria-describedby="Password-feedback"
+        :type="showPassword ? 'text' : 'password'"
+        v-model="password"
+        style="padding-right: 3.5rem;" 
+      ></b-form-input>
+      <button
+        type="button"
+        @click="showPassword = !showPassword"
+        :aria-label="showPassword ? 'Hide password' : 'Show password'"
+        style="
+          position: absolute;
+          right: 8px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: transparent;
+          border: none;
+          padding: 0.25rem 0.5rem;
+          cursor: pointer;
+          font-size: 0.85rem;
+        "
+      >
+        <span v-if="showPassword">{{ $t("Hide") }}</span>
+        <span v-else>{{ $t("Show") }}</span>
+      </button>
+    </div>
+    <b-form-invalid-feedback id="Password-feedback">
+      {{ validationContext.errors[0] }}
+    </b-form-invalid-feedback>
+  </b-form-group>
+</validation-provider>
+
 
                                         <div class="small">
                                             <a
@@ -200,6 +211,8 @@ export default {
             loading: false,
             logo: null,
             showLogin: false, // Added for toggling views
+            showPassword: false,
+
         };
     },
     computed: {

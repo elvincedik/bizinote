@@ -1,10 +1,14 @@
 <template>
   <div class="pos_page">
-    <div class="container-fluid p-0 app-admin-wrap layout-sidebar-large clearfix" id="pos">
-      <div v-if="isLoading" class="loading_page spinner spinner-primary mr-3"></div>
+    <div class="container-fluid p-3 app-admin-wrap layout-sidebar-large clearfix" id="pos">
+      <div>
+            <p>Sales / POS</p>
+        </div>
+        <h3 class="">POS</h3>
+      <!-- <div v-if="isLoading" class="loading_page spinner spinner-primary mr-3"></div> -->
       <b-row v-if="!isLoading">
         <!-- Card Left Panel Details Sale-->
-        <b-col md="5">
+        <b-col md="6">
           <b-card no-body class="card-order">
             <div class="main-header">
               <div class="logo">
@@ -266,7 +270,7 @@
                     <b-row>
                       <b-col md="12">
                         <div class="grandtotal">
-                          <span>{{$t("Total_Payable")}} : {{currentUser.currency}} {{GrandTotal.toFixed(2)}}</span>
+                          <span>{{$t("Total_Payable")}} jhhh: {{currentUser.currency}} {{GrandTotal.toFixed(2)}}</span>
                         </div>
                       </b-col>
 
@@ -521,7 +525,7 @@
         </b-col>
 
         <!-- Card right Of Products -->
-        <b-col md="7">
+        <b-col md="6">
           <b-card class="list-grid">
             <b-row>
               <b-col md="6">

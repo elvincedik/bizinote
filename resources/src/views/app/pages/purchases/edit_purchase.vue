@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content">
+  <div class="main-content" style="width: 96%; margin-left: 4%">
     <breadcumb :page="$t('EditPurchase')" :folder="$t('ListPurchases')"/>
     <div v-if="isLoading" class="loading_page spinner spinner-primary mr-3"></div>
 
