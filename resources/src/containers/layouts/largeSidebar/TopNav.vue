@@ -54,7 +54,7 @@
         <div style="margin: auto"></div>
 
         <div class="header-part-right">
-            <router-link
+            <!-- <router-link
                 v-if="
                     currentUserPermissions &&
                     currentUserPermissions.includes('Pos_view')
@@ -63,12 +63,12 @@
                 to="/app/pos"
             >
                 <span class="ul-btn__text ml-1">POS</span>
-            </router-link>
+            </router-link> -->
             <!-- Full screen toggle -->
-            <i
+            <!-- <i
                 class="i-Full-Screen header-icon d-none d-sm-inline-block"
                 @click="handleFullScreen"
-            ></i>
+            ></i> -->
             <!-- Grid menu Dropdown -->
 
             <div class="dropdown" v-if="show_language">
@@ -190,14 +190,15 @@
                     variant="link"
                 >
                     <template slot="button-content">
-                        <img
+                        <!-- <img
                             :src="'/images/avatar/' + currentUser.avatar"
                             id="userDropdown"
                             alt
                             data-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="false"
-                        />
+                        /> -->
+                        <i class="i-Lock-User mr-1"></i>
                     </template>
 
                     <div

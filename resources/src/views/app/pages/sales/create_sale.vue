@@ -1,6 +1,10 @@
 <template>
   <div class="main-content">
-    <breadcumb :page="$t('AddSale')" :folder="$t('ListSales')"/>
+    <div>
+            <p>Sales / Create Sales</p>
+        </div>
+        <h3 class="mb-0">Create Sales</h3>
+    <!-- <breadcumb :page="$t('AddSale')" :folder="$t('ListSales')"/> -->
     <div v-if="isLoading" class="loading_page spinner spinner-primary mr-3"></div>
 
     <validation-observer ref="create_sale" v-if="!isLoading">
@@ -82,7 +86,7 @@
                 <b-col md="12" class="mb-5">
                   <h6>{{$t('ProductName')}}</h6>
                  
-                  <div id="autocomplete" class="autocomplete">
+                  <div id="autocomplete" class="autocomplete w-50">
                     <div class="input-with-icon">
                       <img src="/assets_setup/scan.png" alt="Scan" class="scan-icon" @click="showModal">
                     <input 
@@ -105,7 +109,7 @@
                   <h5>{{$t('order_products')}} *</h5>
                   <div class="table-responsive">
                     <table class="table table-hover">
-                      <thead class="bg-gray-300">
+                      <thead class="">
                         <tr>
                           <th scope="col">#</th>
                           <th scope="col">{{$t('ProductName')}}</th>
@@ -176,8 +180,8 @@
                   </div>
                 </b-col>
 
-                <div class="offset-md-9 col-md-3 mt-4">
-                  <table class="table table-striped table-sm">
+                <div class="col-md-3 mt-4">
+                  <table class="table table-sm">
                     <tbody>
                       <tr>
                         <td class="bold">{{$t('OrderTax')}}</td>
@@ -207,8 +211,10 @@
                   </table>
                 </div>
 
+                <div class="col-md-9"></div>
+
                 <!-- Order Tax  -->
-                <b-col lg="4" md="4" sm="12" class="mb-3" v-if="currentUserPermissions && currentUserPermissions.includes('edit_tax_discount_shipping_sale')">
+                <b-col lg="3" md="4" sm="12" class="mb-3" v-if="currentUserPermissions && currentUserPermissions.includes('edit_tax_discount_shipping_sale')">
                   <validation-provider
                     name="Order Tax"
                     :rules="{ regex: /^\d*\.?\d*$/}"
@@ -232,7 +238,7 @@
                 </b-col>
 
                 <!-- Discount -->
-                <b-col lg="4" md="4" sm="12" class="mb-3" v-if="currentUserPermissions && currentUserPermissions.includes('edit_tax_discount_shipping_sale')">
+                <b-col lg="3" md="4" sm="12" class="mb-3" v-if="currentUserPermissions && currentUserPermissions.includes('edit_tax_discount_shipping_sale')">
                   <validation-provider
                     name="Discount"
                     :rules="{ regex: /^\d*\.?\d*$/}"
@@ -256,7 +262,7 @@
                 </b-col>
 
                 <!-- Shipping  -->
-                <b-col lg="4" md="4" sm="12" class="mb-3" v-if="currentUserPermissions && currentUserPermissions.includes('edit_tax_discount_shipping_sale')">
+                <b-col lg="3" md="4" sm="12" class="mb-3" v-if="currentUserPermissions && currentUserPermissions.includes('edit_tax_discount_shipping_sale')">
                   <validation-provider
                     name="Shipping"
                     :rules="{ regex: /^\d*\.?\d*$/}"
@@ -281,7 +287,7 @@
                 </b-col>
 
                 <!-- Status  -->
-                <b-col lg="4" md="4" sm="12" class="mb-3">
+                <b-col lg="3" md="4" sm="12" class="mb-3">
                   <validation-provider name="Status" :rules="{ required: true}">
                     <b-form-group slot-scope="{ valid, errors }" :label="$t('Status') + ' ' + '*'">
                       <v-select
@@ -304,7 +310,7 @@
                 </b-col>
 
                 <!-- PaymentStatus  -->
-                <b-col md="4" v-if="sale.statut == 'completed'">
+                <b-col lg="3" md="4" v-if="sale.statut == 'completed'">
                   <validation-provider name="PaymentStatus">
                     <b-form-group :label="$t('PaymentStatus')">
                       <v-select
@@ -494,7 +500,13 @@
 
                 <b-col md="12">
                   <b-form-group>
-                    <b-button variant="primary" :disabled="paymentProcessing" @click="Submit_Sale"><i class="i-Yes me-2 font-weight-bold"></i> {{$t('submit')}}</b-button>
+                    <b-button variant="primary" :disabled="paymentProcessing" @click="Submit_Sale" 
+                      style="background-color: #0944aa"
+                      class="px-5"
+                    >
+                      <i class="i-Yes me-2 font-weight-bold"></i> 
+                      {{$t('submit')}}
+                    </b-button>
                     <div v-once class="typo__p" v-if="paymentProcessing">
                     <div class="spinner sm spinner-primary mt-3"></div>
                   </div>

@@ -1,11 +1,6 @@
 <template>
     <!-- ============ Body content start ============= -->
-    <div class="main-content" style="width: 96%; margin-left: 4%">
-        <!-- <div id="banner">
-            <h1 class="text-white">Hello Organization Name -</h1>
-            <p>Here’s what is happening in your organization today</p>
-        </div> -->
-        <!-- <div> -->
+    <div class="main-content">
         <div
             v-if="loading"
             class="loading_page spinner spinner-primary mr-3"
@@ -18,16 +13,15 @@
             "
         >
             <div id="banner" class="px-3 pt-3 pb-1">
-                <h1 class="text-white">Hello -</h1>
+                <h1 class="text-white">Hello</h1>
                 <p style="color: #c4aaff">
                     Here’s what is happening in your organization today
                 </p>
 
                 <!-- warehouse -->
                 <b-row class="mb-4">
-                  
                     <b-col lg="4" md="4" sm="12" class="warehouse-select">
-                        <v-select
+                        <!-- <v-select
                             @input="Selected_Warehouse"
                             v-model="warehouse_id"
                             :reduce="(label) => label.value"
@@ -39,11 +33,32 @@
                                 }))
                             "
                             class="vselect-style"
-                        />
+                        /> -->
+                        <select
+                            v-model="warehouse_id"
+                            @change="Selected_Warehouse(warehouse_id)"
+                            class="border-0 rounded text-white p-2 fs-4"
+                            aria-label="Filter by warehouse"
+                            style="background-color: #8855ff; width: 100%;"
+                        >
+                            <option value="" disabled hidden>
+                                {{ $t("Filter_by_warehouse") }}
+                            </option>
+                            <option value="">
+                                {{ $t("All_Warehouses") /* or custom text */ }}
+                            </option>
+                            <option
+                                v-for="w in warehouses"
+                                :key="w.id"
+                                :value="w.id"
+                            >
+                                {{ w.name }}
+                            </option>
+                        </select>
                     </b-col>
 
                     <b-col lg="4" md="4" sm="12">
-                        <date-range-picker
+                        <!-- <date-range-picker
                             v-model="dateRange"
                             :startDate="startDate"
                             :endDate="endDate"
@@ -57,7 +72,66 @@
                                 {{ picker.startDate.toJSON().slice(0, 10) }} -
                                 {{ picker.endDate.toJSON().slice(0, 10) }}
                             </template>
-                        </date-range-picker>
+                        </date-range-picker> -->
+                        <div
+                            class="border-0 rounded text-white p-2 fs-4"
+                            style="
+                                width: 100%;
+                                display: flex;
+                                gap: 8px;
+                                align-items: center;
+                                background-color: #8855ff;
+                            "
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 4px;
+                                "
+                                class="text-white"
+                            >
+                                <label for="dr-start" class="sr-only d-none text-white">{{
+                                    $t("Start_Date")
+                                }}</label>
+                                <input
+                                    id="dr-start"
+                                    type="date"
+                                    :value="formatForInput(dateRange.startDate)"
+                                    @input="
+                                        onNativeDateChange(
+                                            $event.target.value,
+                                            'start'
+                                        )
+                                    "
+                                    class="vselect-style text-white"
+                                />
+                            </div>
+                            <span>–</span>
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 4px;
+                                "
+                            >
+                                <label for="dr-end" class="sr-only">{{
+                                    $t("End_Date")
+                                }}</label>
+                                <input
+                                    id="dr-end"
+                                    type="date"
+                                    :value="formatForInput(dateRange.endDate)"
+                                    @input="
+                                        onNativeDateChange(
+                                            $event.target.value,
+                                            'end'
+                                        )
+                                    "
+                                    class="vselect-style text-white"
+                                />
+                            </div>
+                        </div>
                     </b-col>
                 </b-row>
             </div>
@@ -71,13 +145,10 @@
                             class="card-icon-b card-icon-bg-primary o-hidden mb-30 text-cente"
                         >
                             <p class="text-muted mt-2 mb-0">
-                                    {{ $t("Sales") }}
-                                </p>
+                                {{ $t("Sales") }}
+                            </p>
                             <div class="content">
-                                
-                                <h1
-                                    class="text-24 line-height-1 mb-2"
-                                >
+                                <h1 class="text-24 line-height-1 mb-2">
                                     {{ currentUser.currency }}
                                     {{
                                         report_today.today_sales
@@ -96,13 +167,10 @@
                             class="card-icon-b card-icon-bg-primary o-hidden mb-30 text-cente"
                         >
                             <p class="text-muted mt-2 mb-0">
-                                    {{ $t("Purchases") }}
-                                </p>
+                                {{ $t("Purchases") }}
+                            </p>
                             <div class="content">
-                                
-                                <h1
-                                    class="text-24 line-height-1 mb-2"
-                                >
+                                <h1 class="text-24 line-height-1 mb-2">
                                     {{ currentUser.currency }}
                                     {{
                                         report_today.today_purchases
@@ -121,13 +189,10 @@
                             class="card-icon-b card-icon-bg-primary o-hidden mb-30 text-cente"
                         >
                             <p class="text-muted mt-2 mb-0">
-                                    {{ $t("SalesReturn") }}
-                                </p>
+                                {{ $t("SalesReturn") }}
+                            </p>
                             <div class="content">
-                                
-                                <h1
-                                    class="text-24 line-height-1 mb-2"
-                                >
+                                <h1 class="text-24 line-height-1 mb-2">
                                     {{ currentUser.currency }}
                                     {{
                                         report_today.return_sales
@@ -146,13 +211,10 @@
                             class="card-icon-b card-icon-bg-primary o-hidden mb-30 text-cente"
                         >
                             <p class="text-muted mt-2 mb-0">
-                                    {{ $t("PurchasesReturn") }}
-                                </p>
+                                {{ $t("PurchasesReturn") }}
+                            </p>
                             <div class="content">
-                                
-                                <h1
-                                    class="text-24 line-height-1 mb-2"
-                                >
+                                <h1 class="text-24 line-height-1 mb-2">
                                     {{ currentUser.currency }}
                                     {{
                                         report_today.return_purchases
@@ -164,8 +226,6 @@
                         </b-card>
                     </router-link>
                 </b-col>
-
-                
             </b-row>
 
             <b-row>
@@ -173,6 +233,7 @@
                     <b-card class="mb-30">
                         <h4 class="card-title m-0">
                             {{ $t("This_Week_Sales_Purchases") }}
+                            <!-- Sales And Purchasess -->
                         </h4>
                         <div class="chart-wrapper">
                             <div
@@ -593,6 +654,30 @@ export default {
         },
     },
     methods: {
+        // helper to format a Date object to yyyy-MM-dd for date input value
+        formatForInput(dateObj) {
+            if (!dateObj) return "";
+            const d = new Date(dateObj);
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, "0");
+            const dd = String(d.getDate()).padStart(2, "0");
+            return `${yyyy}-${mm}-${dd}`;
+        },
+
+        // called when native date input changes
+        onNativeDateChange(value, which) {
+            if (!value) return;
+            // value is "YYYY-MM-DD"
+            const parsed = new Date(value + "T00:00:00"); // avoid timezone shift
+            if (which === "start") {
+                this.dateRange.startDate = parsed;
+            } else if (which === "end") {
+                this.dateRange.endDate = parsed;
+            }
+            // sync your derived startDate/endDate and trigger fetch
+            this.Submit_filter_dateRange();
+        },
+
         //----------------------------- Submit Date Picker -------------------\\
         Submit_filter_dateRange() {
             var self = this;
@@ -762,44 +847,55 @@ export default {
                             },
                         ],
                     };
+                    const days = responseData.sales.original.days.map((d) => {
+                        return moment(d, moment.ISO_8601, true).isValid()
+                            ? moment(d).format("ddd")
+                            : d;
+                    });
                     this.echartSales = {
                         legend: {
-                            borderRadius: 0,
                             orient: "horizontal",
-                            x: "right",
+                            bottom: 0,
+                            left: "center",
                             data: ["Sales", "Purchases"],
                         },
                         grid: {
-                            left: "8px",
+                            top: "20px", // pulls the chart area up slightly
                             right: "8px",
-                            bottom: "0",
+                            left: "8px",
+                            bottom: "60px", // gives extra space for the legend at the bottom
                             containLabel: true,
                         },
                         tooltip: {
                             show: true,
-
                             backgroundColor: "rgba(0, 0, 0, .8)",
+                            trigger: "axis",
+                            axisPointer: {
+                                type: "line",
+                            },
                         },
-
                         xAxis: [
                             {
                                 type: "category",
-                                data: responseData.sales.original.days,
+                                boundaryGap: false,
+                                data: days, // assuming you kept the weekday mapping from earlier
                                 axisTick: {
                                     alignWithLabel: true,
                                 },
                                 splitLine: {
-                                    show: false,
+                                    show: true, // vertical grid lines
+                                    lineStyle: {
+                                        type: "dashed",
+                                        color: "#e6e9ef",
+                                    },
                                 },
                                 axisLabel: {
                                     color: dark_heading,
                                     interval: 0,
-                                    rotate: 30,
+                                    rotate: 0,
                                 },
                                 axisLine: {
                                     show: true,
-                                    color: dark_heading,
-
                                     lineStyle: {
                                         color: dark_heading,
                                     },
@@ -809,23 +905,19 @@ export default {
                         yAxis: [
                             {
                                 type: "value",
-
+                                min: 0,
                                 axisLabel: {
                                     color: dark_heading,
-                                    // formatter: "${value}"
                                 },
                                 axisLine: {
                                     show: false,
-                                    color: dark_heading,
-
-                                    lineStyle: {
-                                        color: dark_heading,
-                                    },
                                 },
-                                min: 0,
                                 splitLine: {
-                                    show: true,
-                                    interval: "auto",
+                                    show: true, // horizontal grid lines
+                                    lineStyle: {
+                                        type: "dashed",
+                                        color: "#e6e9ef",
+                                    },
                                 },
                             },
                         ],
@@ -834,39 +926,54 @@ export default {
                             {
                                 name: "Sales",
                                 data: responseData.sales.original.data,
-                                label: { show: false, color: "#8B5CF6" },
-                                type: "bar",
-                                color: "#A78BFA",
+                                type: "line",
                                 smooth: true,
+                                symbol: "circle",
+                                symbolSize: 10,
+                                lineStyle: {
+                                    width: 3,
+                                },
+                                label: { show: false, color: "#8B5CF6" },
                                 itemStyle: {
+                                    color: "#A78BFA",
+                                    borderColor: "#fff",
+                                    borderWidth: 2,
                                     emphasis: {
                                         shadowBlur: 10,
                                         shadowOffsetX: 0,
-                                        shadowOffsetY: -2,
-                                        shadowColor: "rgba(0, 0, 0, 0.3)",
+                                        shadowOffsetY: 0,
                                     },
+                                    shadowBlur: 6,
+                                    shadowColor: "rgba(167, 139, 250, 0.5)",
                                 },
                             },
                             {
                                 name: "Purchases",
                                 data: responseData.purchases.original.data,
-
-                                label: { show: false, color: "#0168c1" },
-                                type: "bar",
-                                barGap: 0,
-                                color: "#DDD6FE",
+                                type: "line",
                                 smooth: true,
+                                symbol: "circle",
+                                symbolSize: 10,
+                                lineStyle: {
+                                    width: 3,
+                                },
+                                label: { show: false, color: "#0168c1" },
                                 itemStyle: {
+                                    color: "#F59E0B",
+                                    borderColor: "#fff",
+                                    borderWidth: 2,
                                     emphasis: {
                                         shadowBlur: 10,
                                         shadowOffsetX: 0,
-                                        shadowOffsetY: -2,
-                                        shadowColor: "rgba(0, 0, 0, 0.3)",
+                                        shadowOffsetY: 0,
                                     },
+                                    shadowBlur: 6,
+                                    shadowColor: "rgba(245, 158, 11, 0.5)",
                                 },
                             },
                         ],
                     };
+
                     this.loading = false;
                 })
                 .catch((response) => {

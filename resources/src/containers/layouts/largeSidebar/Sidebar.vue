@@ -963,8 +963,9 @@
             :class="{ open: getSideBarToggleProperties.isSecondarySideNavOpen }"
             :settings="{ suppressScrollX: true, wheelPropagation: false }"
             class="sidebar-left-secondary ps rtl-ps-none"
+            style="width: 275px;"
         >
-            <div ref="sidebarChild">
+            <div ref="sidebarChild" class="d-flex justify-content-center">
                 <ul
                     class="childNav d-none"
                     data-parent="products"
@@ -977,7 +978,7 @@
                             currentUserPermissions.includes('products_add')
                         "
                     >
-                        <router-link tag="a" class to="/app/products/store">
+                        <router-link tag="a" class="" to="/app/products/store">
                             <i class="nav-icon i-Add-File"></i>
                             <span class="item-name">{{
                                 $t("AddProduct")
@@ -991,7 +992,7 @@
                             currentUserPermissions.includes('products_view')
                         "
                     >
-                        <router-link tag="a" class to="/app/products/list">
+                        <router-link tag="a" class="" to="/app/products/list">
                             <i class="nav-icon i-Files"></i>
                             <span class="item-name">{{
                                 $t("productsList")
@@ -1010,7 +1011,7 @@
                     >
                         <router-link
                             tag="a"
-                            class
+                            class=""
                             to="/app/products/opening_stock_import"
                         >
                             <i class="nav-icon i-Add-File"></i>
@@ -1027,7 +1028,7 @@
                             currentUserPermissions.includes('barcode_view')
                         "
                     >
-                        <router-link tag="a" class to="/app/products/barcode">
+                        <router-link tag="a" class="" to="/app/products/barcode">
                             <i class="nav-icon i-Bar-Code"></i>
                             <span class="item-name">{{
                                 $t("Printbarcode")
@@ -1044,7 +1045,7 @@
                     >
                         <router-link
                             tag="a"
-                            class
+                            class=""
                             to="/app/products/count_stock"
                         >
                             <i class="nav-icon i-Check-2"></i>
@@ -1062,7 +1063,7 @@
                     >
                         <router-link
                             tag="a"
-                            class
+                            class=""
                             to="/app/products/Categories"
                         >
                             <i class="nav-icon i-Duplicate-Layer"></i>
@@ -1078,7 +1079,7 @@
                             currentUserPermissions.includes('brand')
                         "
                     >
-                        <router-link tag="a" class to="/app/products/Brands">
+                        <router-link tag="a" class="" to="/app/products/Brands">
                             <i class="nav-icon i-Bookmark"></i>
                             <span class="item-name">{{ $t("Brand") }}</span>
                         </router-link>
@@ -1090,7 +1091,7 @@
                             currentUserPermissions.includes('unit')
                         "
                     >
-                        <router-link tag="a" class to="/app/products/Units">
+                        <router-link tag="a" class="" to="/app/products/Units">
                             <i class="nav-icon i-Quotes"></i>
                             <span class="item-name">{{ $t("Units") }}</span>
                         </router-link>

@@ -4,7 +4,7 @@
 
     <sidebar />
 
-    <main>
+    <main style="width: 96%; margin-left: 4%">
       <div
         :class="{ 'sidenav-open': getSideBarToggleProperties.isSideNavOpen }"
         class="main-content-wrap d-flex flex-column flex-grow-1"
