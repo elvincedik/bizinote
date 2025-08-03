@@ -1,6 +1,6 @@
  <template>
-  <div class="footer_wrap">
-    <!-- Footer Start -->
+  <!-- <div class="footer_wrap">
+    
     <div class="flex-grow-1"></div>
     <div class="app-footer">
       <div class="row">
@@ -22,9 +22,9 @@
           <span class="flex-grow-1"></span>
         </div>
       </div>
-      <!-- fotter end -->
+      
     </div>
-  </div>
+  </div> -->
 </template> 
 <script>
 import { mapGetters, mapActions } from "vuex";
