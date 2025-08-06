@@ -669,7 +669,7 @@
                                             v-model="purchase.notes"
                                             rows="4"
                                             class="form-control"
-                                            :placeholder="$t('Afewwords')"
+                                            :placeholder="$t('Enter a few words')"
                                         ></textarea>
                                     </b-form-group>
                                 </b-col>
