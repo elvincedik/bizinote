@@ -4,7 +4,7 @@
             <p>purchases / All Purchases</p>
         </div>
         <h3 class="mb-0">All Purchases</h3>
-        <hr class="mt-1" />
+        <hr class="mt-1" style="border-left: 14px solid #0944AA; height: 3px;" />
         <!-- <breadcumb :page="$t('ListPurchases')" :folder="$t('Purchases')"/> -->
         <div
             v-if="isLoading"
