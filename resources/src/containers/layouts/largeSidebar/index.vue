@@ -4,7 +4,7 @@
 
     <sidebar />
 
-    <main style="width: 96%; margin-left: 4%">
+    <main style="width: 96%; margin-left: 4%;">
       <div
         :class="{ 'sidenav-open': getSideBarToggleProperties.isSideNavOpen }"
         class="main-content-wrap d-flex flex-column flex-grow-1"
@@ -41,5 +41,9 @@ export default {
   methods: {},
 };
 </script>
-<style>
+<style scoped>
+
+.main-content-wrap {
+  background-color: #fafafb !important;
+}
 </style>
