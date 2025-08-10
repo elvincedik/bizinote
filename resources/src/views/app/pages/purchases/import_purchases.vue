@@ -433,8 +433,8 @@
                                             <!-- <i
                                                 class="i-Yes me-2 font-weight-bold"
                                             ></i> -->
-                                            {{ $t("submit") }}</b-button
-                                        >
+                                            {{ $t("submit") }}
+                                        </b-button>
                                         <div
                                             v-once
                                             class="typo__p"
